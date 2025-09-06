@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="seu.pacote">
+    tools:context="com.example.app2.MainActivity">
 
     <!-- PARTE 1: CRONÔMETRO + BOTÃO INICIAR -->
     <LinearLayout
