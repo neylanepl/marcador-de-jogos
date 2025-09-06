@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +13,8 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:background="@color/material_dynamic_neutral90">
 
         <Chronometer
             android:id="@+id/cronometro"
@@ -33,11 +33,11 @@
             android:text="INICIAR PARTIDA" />
     </LinearLayout>
 
-    <!-- PARTE 2: PLACAR + LISTA DE GOLS -->
+    <!-- PARTE 2 + 3: PLACAR, LISTA DE GOLS E BOTÕES DE PONTUAÇÃO -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:orientation="horizontal"
         android:padding="8dp">
 
@@ -48,7 +48,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/timeA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                 android:textSize="16sp"
                 android:fontFamily="sans-serif" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/placarTimeA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,11 +73,34 @@
                 android:layout_weight="1"
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="1dp"
-                android:background="#f2f2f2" />
+                android:background="@color/material_dynamic_neutral95" />
+
+            <!-- Botões -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tresPontosA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+3 PONTOS"
+                android:layout_marginHorizontal="5dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/doisPontosA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+2 PONTOS"
+                android:layout_marginHorizontal="5dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tiroLivreA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tiro Livre"
+                android:layout_marginHorizontal="5dp" />
         </LinearLayout>
 
+        <!-- Linha divisória -->
         <View
-            android:layout_width="1dp"
+            android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray" />
 
@@ -113,74 +136,29 @@
                 android:layout_weight="1"
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="1dp"
-                android:background="#f2f2f2" />
-        </LinearLayout>
-    </LinearLayout>
+                android:background="@color/material_dynamic_neutral95"/>
 
-    <!-- PARTE 3: BOTÕES DE PONTUAÇÃO -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <!-- Botões Time A -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/tresPontosA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="+3 PONTOS" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/doisPontosA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="+2 PONTOS" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/tiroLivreA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tiro Livre" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray" />
-
-        <!-- Botões Time B -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
+            <!-- Botões -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tresPontosB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="+3 PONTOS"
-                />
+                android:layout_marginHorizontal="5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/doisPontosB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+2 PONTOS" />
+                android:text="+2 PONTOS"
+                android:layout_marginHorizontal="5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tiroLivreB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tiro Livre" />
+                android:text="Tiro Livre"
+                android:layout_marginHorizontal="5dp" />
         </LinearLayout>
     </LinearLayout>
 
