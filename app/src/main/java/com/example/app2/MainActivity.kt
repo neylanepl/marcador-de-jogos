@@ -2,6 +2,8 @@
 package com.example.app2
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -10,22 +12,43 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.app2.ui.theme.App2Theme
 
 class MainActivity : ComponentActivity() {
+
+    private var pontuacaoTimeA = 0
+    private var pontuacaoTimeB = 0
+    private var partidaIniciada = false
+
+    private lateinit var pTimeA: TextView
+    private lateinit var pTimeB: TextView
+    private lateinit var cronometro: Chronometer
+    private lateinit var btnIniciar: Button
+
+    // Listas de gols por time
+    private lateinit var listaGolsA: ListView
+    private lateinit var listaGolsB: ListView
+    private lateinit var adapterA: ArrayAdapter<String>
+    private lateinit var adapterB: ArrayAdapter<String>
+    private val golsA = mutableListOf<String>()
+    private val golsB = mutableListOf<String>()
+
+    private lateinit var handler: Handler
+
+    private val checkRunnable = object : Runnable {
+        override fun run() {
+            if (partidaIniciada) {
+                checarPartidaTerminou()
+                handler.postDelayed(this, 1000) // Check again after 1 second
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.layout_main)
+
+        handler = Handler(Looper.getMainLooper())
 
         // Views de placar
         pTimeA = findViewById(R.id.placarTimeA)
@@ -35,7 +58,7 @@ class MainActivity : ComponentActivity() {
         cronometro = findViewById(R.id.cronometro)
         btnIniciar = findViewById(R.id.iniciarPartida)
 
-// ListViews e adapters
+        // ListViews e adapters
         listaGolsA = findViewById(R.id.listaGolsTimeA)
         listaGolsB = findViewById(R.id.listaGolsTimeB)
         adapterA = ArrayAdapter(this, android.R.layout.simple_list_item_1, golsA)
@@ -54,7 +77,7 @@ class MainActivity : ComponentActivity() {
         val bTiroLivreTimeB: Button = findViewById(R.id.tiroLivreB)
 
         // Reiniciar
-        val bReiniciar: Button = findViewById(R.id.reiniciarPartida)
+        val bReiniciar: Button = findViewById(R.id.pararPartida)
 
         // Iniciar partida
         btnIniciar.setOnClickListener {
@@ -62,6 +85,7 @@ class MainActivity : ComponentActivity() {
                 cronometro.base = SystemClock.elapsedRealtime()
                 cronometro.start()
                 partidaIniciada = true
+                startPeriodicCheck() // Start periodic check
                 Toast.makeText(this, "Partida iniciada!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -75,25 +99,16 @@ class MainActivity : ComponentActivity() {
         bDoisPontosTimeB.setOnClickListener { adicionarPontos(2, "B") }
         bTiroLivreTimeB.setOnClickListener { adicionarPontos(1, "B") }
 
-        bReiniciar.setOnClickListener { reiniciarPartida() }
+        bReiniciar.setOnClickListener { finalizarPartida() }
     }
-    private var pontuacaoTimeA = 0
-    private var pontuacaoTimeB = 0
-    private var partidaIniciada = false
 
-    private lateinit var pTimeA: TextView
-    private lateinit var pTimeB: TextView
-    private lateinit var cronometro: Chronometer
-    private lateinit var btnIniciar: Button
+    private fun startPeriodicCheck() {
+        handler.post(checkRunnable)
+    }
 
-    // Listas de gols por time
-    private lateinit var listaGolsA: ListView
-    private lateinit var listaGolsB: ListView
-    private lateinit var adapterA: ArrayAdapter<String>
-    private lateinit var adapterB: ArrayAdapter<String>
-    private val golsA = mutableListOf<String>()
-    private val golsB = mutableListOf<String>()
-
+    private fun stopPeriodicCheck() {
+        handler.removeCallbacks(checkRunnable)
+    }
 
     private fun adicionarPontos(pontos: Int, time: String) {
         if (!partidaIniciada) {
@@ -117,9 +132,33 @@ class MainActivity : ComponentActivity() {
             adapterB.notifyDataSetChanged()
             listaGolsB.smoothScrollToPosition(golsB.size - 1)
         }
-    }
 
-    private fun reiniciarPartida() {
+         checarPartidaTerminou()
+    }
+    private fun checarPartidaTerminou() {
+        val tempoSeg = ((SystemClock.elapsedRealtime() - cronometro.base) / 1000).toInt()
+
+        if (!partidaIniciada) return
+
+        val deveTerminar = tempoSeg >= 10 || pontuacaoTimeA >= 20 || pontuacaoTimeB >= 20
+
+        if (!deveTerminar) {
+            return
+        }
+
+        if(pontuacaoTimeA == pontuacaoTimeB){
+            Toast.makeText(this, "Partida terminada! Empate!", Toast.LENGTH_LONG).show()
+        }
+        else{
+            val vencedor = if (pontuacaoTimeA > pontuacaoTimeB) "Time A" else "Time B"
+            Toast.makeText(this, "Partida terminada! Vencedor: $vencedor", Toast.LENGTH_LONG).show()
+        }
+
+        finalizarPartida()
+    }
+    private fun finalizarPartida() {
+        stopPeriodicCheck()
+
         // Zera placares
         pontuacaoTimeA = 0
         pontuacaoTimeB = 0
@@ -137,6 +176,11 @@ class MainActivity : ComponentActivity() {
         cronometro.base = SystemClock.elapsedRealtime()
         partidaIniciada = false
 
-        Toast.makeText(this, "Partida reiniciada", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Partida finalizada", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopPeriodicCheck()
     }
 }

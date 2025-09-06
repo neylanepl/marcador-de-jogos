@@ -171,9 +171,9 @@
         android:padding="8dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/reiniciarPartida"
+            android:id="@+id/pararPartida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="REINICIAR PARTIDA" />
+            android:text="PARAR PARTIDA" />
     </LinearLayout>
 </LinearLayout>
