@@ -2,8 +2,8 @@
 <resources>
 
 <!--    <style name="Theme.App2" parent="android:Theme.Material.Light.NoActionBar" />-->
-        <style name="Theme.App2" parent="Theme.Material3.DayNight.NoActionBar">
-            <item name="colorPrimary">@color/cardview_dark_background</item>
-            <item name="colorPrimaryVariant">@color/teal_700</item>
+        <style name="Theme.App2" parent="Theme.Material3.DayNight">
+            <item name="colorPrimary">#4B734C</item>
+            <item name="colorSecondary">@color/cardview_dark_background</item>
         </style>
 </resources>

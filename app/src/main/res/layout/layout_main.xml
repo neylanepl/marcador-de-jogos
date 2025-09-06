@@ -73,7 +73,7 @@
                 android:layout_weight="1"
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="1dp"
-                android:background="@color/material_dynamic_neutral95" />
+                android:layout_marginVertical="8dp" />
 
             <!-- Botões -->
             <com.google.android.material.button.MaterialButton
@@ -136,7 +136,7 @@
                 android:layout_weight="1"
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="1dp"
-                android:background="@color/material_dynamic_neutral95"/>
+                android:layout_marginVertical="8dp"/>
 
             <!-- Botões -->
             <com.google.android.material.button.MaterialButton
@@ -174,6 +174,7 @@
             android:id="@+id/pararPartida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PARAR PARTIDA" />
+            android:text="FINALIZAR PARTIDA"
+            android:backgroundTint="#CC4C4C" />
     </LinearLayout>
 </LinearLayout>
